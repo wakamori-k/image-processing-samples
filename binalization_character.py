@@ -3,6 +3,25 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
+def adaptive_binalization(org_img):
+	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
+
+	# Calc threshold on gram_img using OTSU THRESHOLD
+
+	#bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 3, 5)
+	bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+
+	return bin_img
+
+def binalization(org_img):
+	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
+
+	# Calc threshold on gram_img using OTSU THRESHOLD
+	T, bin_img = cv2.threshold(gry_img, 127, 255, cv2.THRESH_BINARY) 
+
+	return bin_img
+
+
 def binalization_otsu(org_img):
 	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
 
@@ -19,13 +38,19 @@ def main():
 
 	height, width, channels = img.shape[:3]
 	img = cv2.resize(img, (500, int(height*(500.0/width))))
-
 	cv2.imshow('original image', img)
 	cv2.waitKey(0)
 
-	result_img = binalization_otsu(img)
+	result_img = binalization(img)
+	cv2.imshow('binalization image', result_img)
+	cv2.waitKey(0)
 
-	cv2.imshow('result image', result_img)
+	result_img = adaptive_binalization(img)
+	cv2.imshow('adaptive binalization image', result_img)
+	cv2.waitKey(0)
+
+	result_img = binalization_otsu(img)
+	cv2.imshow('otsu binalization image', result_img)
 	cv2.waitKey(0)
 
 	cv2.destroyAllWindows()
