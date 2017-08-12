@@ -11,11 +11,14 @@ def binalization_otsu(org_img):
 
 	return bin_img
 
-
 def main():
-	img_path = "figure/english_letter.jpg"
+	#img_path = "figure/english_letter.jpg"
+	img_path = "figure/enter_graduate.jpg"
 	img = cv2.imread(img_path, cv2.IMREAD_COLOR ) # COLOR MODE
 	#img = cv2.imgread(img_path, cv2.IMREAD_GRAYSCALE ) # GRAY SCALE MODE
+
+	height, width, channels = img.shape[:3]
+	img = cv2.resize(img, (500, int(height*(500.0/width))))
 
 	cv2.imshow('original image', img)
 	cv2.waitKey(0)
