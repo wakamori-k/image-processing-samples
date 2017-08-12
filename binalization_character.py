@@ -1,10 +1,11 @@
 #coding:utf-8
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 def binalization_otsu(org_img):
 	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
-	
+
 	# Calc threshold on gram_img using OTSU THRESHOLD
 	T, bin_img = cv2.threshold(gry_img, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU) 
 
@@ -19,7 +20,7 @@ def main():
 	cv2.imshow('original image', img)
 	cv2.waitKey(0)
 
-	result_img = binalization(img)
+	result_img = binalization_otsu(img)
 
 	cv2.imshow('result image', result_img)
 	cv2.waitKey(0)
