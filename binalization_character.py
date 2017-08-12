@@ -3,30 +3,37 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-def adaptive_binalization(org_img):
-	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
-
-	# Calc threshold on gram_img using OTSU THRESHOLD
-
-	#bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 3, 5)
-	bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
-
-	return bin_img
-
 def binalization(org_img):
 	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
 
-	# Calc threshold on gram_img using OTSU THRESHOLD
+	# Calc threshold 
 	T, bin_img = cv2.threshold(gry_img, 127, 255, cv2.THRESH_BINARY) 
 
 	return bin_img
 
+def adaptive_binalization(org_img):
+	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
+
+	# Calc threshold 
+	#bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 3, 5)
+	bin_img = cv2.adaptiveThreshold(gry_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+
+	return bin_img
 
 def binalization_otsu(org_img):
 	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
 
 	# Calc threshold on gram_img using OTSU THRESHOLD
 	T, bin_img = cv2.threshold(gry_img, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU) 
+
+	return bin_img
+
+def binalization_otsu_after_gaussian_filtering(org_img):
+	gry_img = cv2.cvtColor(org_img, cv2.COLOR_BGR2GRAY)
+
+	# Calc threshold 
+	gray_gf = cv2.GaussianBlur(gry_img, (3,3), 0)
+	T, bin_img = cv2.threshold(gray_gf, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 	return bin_img
 
@@ -56,8 +63,12 @@ def main():
 	img_list.append(result_img)
 	img_name_list.append("otsu binalization")
 
+	result_img = binalization_otsu_after_gaussian_filtering(img)
+	img_list.append(result_img)
+	img_name_list.append("otsu after gaussian filtering binalization")
+
 	for i in xrange(len(img_list)):
-		plt.subplot(len(img_list)/2, len(img_list)/2, i+1),plt.imshow(img_list[i],'gray')
+		plt.subplot(round(len(img_list)/2.0), len(img_list)/2, i+1),plt.imshow(img_list[i],'gray')
 	   	plt.title(img_name_list[i])
 	   	plt.xticks([]),plt.yticks([])
 	plt.show()
