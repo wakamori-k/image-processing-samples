@@ -36,24 +36,31 @@ def main():
 	img = cv2.imread(img_path, cv2.IMREAD_COLOR ) # COLOR MODE
 	#img = cv2.imgread(img_path, cv2.IMREAD_GRAYSCALE ) # GRAY SCALE MODE
 
+	img_list = []
+	img_name_list = []
+
 	height, width, channels = img.shape[:3]
 	img = cv2.resize(img, (500, int(height*(500.0/width))))
-	cv2.imshow('original image', img)
-	cv2.waitKey(0)
+	img_list.append(img)
+	img_name_list.append("original")
 
 	result_img = binalization(img)
-	cv2.imshow('binalization image', result_img)
-	cv2.waitKey(0)
+	img_list.append(result_img)
+	img_name_list.append("normal binalization")
 
 	result_img = adaptive_binalization(img)
-	cv2.imshow('adaptive binalization image', result_img)
-	cv2.waitKey(0)
+	img_list.append(result_img)
+	img_name_list.append("adaptive binalization")
 
 	result_img = binalization_otsu(img)
-	cv2.imshow('otsu binalization image', result_img)
-	cv2.waitKey(0)
+	img_list.append(result_img)
+	img_name_list.append("otsu binalization")
 
-	cv2.destroyAllWindows()
+	for i in xrange(len(img_list)):
+		plt.subplot(len(img_list)/2, len(img_list)/2, i+1),plt.imshow(img_list[i],'gray')
+	   	plt.title(img_name_list[i])
+	   	plt.xticks([]),plt.yticks([])
+	plt.show()
 
 
 if __name__ == "__main__":
