@@ -38,8 +38,8 @@ def binalization_otsu_after_gaussian_filtering(org_img):
 	return bin_img
 
 def main():
-	#img_path = "figure/english_letter.jpg"
-	img_path = "figure/enter_graduate.jpg"
+	#img_path = "../figure/english_letter.jpg"
+	img_path = "../figure/enter_graduate.jpg"
 	img = cv2.imread(img_path, cv2.IMREAD_COLOR ) # COLOR MODE
 	#img = cv2.imgread(img_path, cv2.IMREAD_GRAYSCALE ) # GRAY SCALE MODE
 
