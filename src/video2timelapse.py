@@ -22,7 +22,9 @@ def main():
 
     frame_cnt = -1
     vfile_name = os.path.basename(args.file) # video file name
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), args.quality]
+
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
 
     while(cap.isOpened()):
         ret, frame = cap.read()
@@ -30,6 +32,7 @@ def main():
 
         if not ret:
             sys.stderr.write("Error: failing capture in frame {}\n".format(frame_cnt))
+            break
 
         if frame_cnt % args.interval != 0:
             continue
